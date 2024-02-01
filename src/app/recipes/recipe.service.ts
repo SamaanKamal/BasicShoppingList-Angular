@@ -9,7 +9,7 @@ export class RecipeService {
     new Recipe('Another Test Recipe', 'This is simply a test', 'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg')
   ];
 
-  getRecipes(){
+  getRecipes() :Recipe[]{
     return this.recipes.slice();
   }
 }
