@@ -8,7 +8,8 @@ import { RecipeService } from '../../recipe.service';
   styleUrls: ['./recipe-item.component.css']
 })
 export class RecipeItemComponent {
-  @Input() recipe!:Recipe
+  @Input() recipe!:Recipe;
+  @Input() index?:number;
 
   constructor(private recipeService:RecipeService){}
 
