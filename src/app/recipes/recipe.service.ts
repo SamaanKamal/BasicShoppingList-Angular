@@ -31,7 +31,7 @@ export class RecipeService {
   }
 
   AddToShoppingList(ingredients:Ingredient[]){
-    this.shoppingListService.AddIngredients(ingredients);
+    this.shoppingListService.addIngredients(ingredients);
   }
 
   getRecipe(id:number) :Recipe{
