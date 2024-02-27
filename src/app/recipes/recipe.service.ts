@@ -37,4 +37,12 @@ export class RecipeService {
   getRecipe(id:number) :Recipe{
     return this.recipes[id];
   }
+
+  addRecipe(recipe: Recipe){
+    this.recipes.push(recipe);
+  }
+
+  updateRecipe(index:number, newRecipe:Recipe){
+    this.recipes[index]=newRecipe;
+  }
 }
