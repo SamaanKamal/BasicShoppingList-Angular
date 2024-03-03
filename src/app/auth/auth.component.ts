@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 export class AuthComponent {
   isLoginMode = true;
   isLoading = false;
+  error:string = '';
 
   constructor(private authService:AuthService){}
 
@@ -26,8 +27,15 @@ export class AuthComponent {
     if (!this.isLoginMode)
     {
       this.authService.signUp(form.value.email, form.value.password).subscribe({
-        next: (resonseData) => console.log(resonseData),
-        error:(error) => console.log(error),
+        next: (resonseData) => {
+          console.log(resonseData);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.log(error);
+          this.error='an error occured!'
+          this.isLoading = false;
+        },
       });
     }
     else {
