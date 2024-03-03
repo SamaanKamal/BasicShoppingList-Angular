@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthResponseData, AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -10,7 +11,9 @@ import { AuthService } from './auth.service';
 export class AuthComponent {
   isLoginMode = true;
   isLoading = false;
-  error:string = '';
+  error: string = '';
+  
+  authObservable!: Observable<AuthResponseData>;
 
   constructor(private authService:AuthService){}
 
@@ -26,21 +29,24 @@ export class AuthComponent {
     this.isLoading = true;
     if (!this.isLoginMode)
     {
-      this.authService.signUp(form.value.email, form.value.password).subscribe({
-        next: (resonseData) => {
-          console.log(resonseData);
-          this.isLoading = false;
-        },
-        error: (errorMessage) => {
-          console.log(errorMessage);
-          this.error = errorMessage;
-          this.isLoading = false;
-        },
-      });
+      this.authObservable = this.authService.signUp(form.value.email, form.value.password);
     }
     else {
-      this.authService.logIn(form.value.email,form.value.password);
+      this.authObservable = this.authService.logIn(form.value.email, form.value.password);
     }
+
+    this.authObservable.subscribe({
+      next: (resonseData) => {
+        console.log(resonseData);
+        this.isLoading = false;
+      },
+      error: (errorMessage) => {
+        console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      },
+    });
+
     form.reset();
   }
 }
