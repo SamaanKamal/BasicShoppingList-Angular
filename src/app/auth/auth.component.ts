@@ -6,33 +6,36 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
-  
+
   authObservable: Observable<AuthResponseData>;
 
-  constructor(private authService:AuthService){}
+  constructor(private authService: AuthService) {}
 
-  onSwitchMode(){
+  onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
   onSubmit(form: NgForm) {
-    if (!form.valid)
-    {
-      return;  
+    if (!form.valid) {
+      return;
     }
     this.isLoading = true;
-    if (!this.isLoginMode)
-    {
-      this.authObservable = this.authService.signUp(form.value.email, form.value.password);
-    }
-    else {
-      this.authObservable = this.authService.logIn(form.value.email, form.value.password);
+    if (!this.isLoginMode) {
+      this.authObservable = this.authService.signUp(
+        form.value.email,
+        form.value.password
+      );
+    } else {
+      this.authObservable = this.authService.logIn(
+        form.value.email,
+        form.value.password
+      );
     }
 
     this.authObservable.subscribe({
