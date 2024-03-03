@@ -11,9 +11,9 @@ import { Observable } from 'rxjs';
 export class AuthComponent {
   isLoginMode = true;
   isLoading = false;
-  error: string = '';
+  error: string = null;
   
-  authObservable!: Observable<AuthResponseData>;
+  authObservable: Observable<AuthResponseData>;
 
   constructor(private authService:AuthService){}
 

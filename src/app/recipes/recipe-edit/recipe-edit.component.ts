@@ -10,8 +10,8 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-edit.component.css']
 })
 export class RecipeEditComponent implements OnInit{
-  recipeForm!:FormGroup;
-  id!:number;
+  recipeForm:FormGroup;
+  id:number;
   editMode:boolean=false
   constructor(private route :ActivatedRoute,private router:Router,private recipeService:RecipeService){}
 

@@ -10,8 +10,8 @@ import { ShoppingListService } from './shopping-list.service';
   
 })
 export class ShoppingListComponent implements OnInit ,OnDestroy{
-  ingredients!: Ingredient[];
-  subiscribtion?: Subscription;
+  ingredients: Ingredient[];
+  subiscribtion: Subscription;
 
   constructor(private shoppingListService:ShoppingListService){}
 
