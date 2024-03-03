@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { environment } from 'environment';
@@ -30,35 +30,61 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
-      .pipe(
-        catchError((errorRes) => {
-          let errorMessage = 'an Unkown Error occurred!';
-          if (!errorRes.error || !errorRes.error.error) {
-            throwError(() => {
-              const newError = new Error(errorMessage);
-              return newError;
-            });
-          }
-          switch (errorRes.error.error.message) {
-            case 'EMAIL_EXISTS':
-              errorMessage = 'This email already exists';
-          }
-          return throwError(() => {
-            const newError = new Error(errorMessage);
-            return newError;
-          });
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
   logIn(email: string, password: string) {
-    return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
-        this.apiKey,
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      }
-    );
+    return this.http
+      .post<AuthResponseData>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
+          this.apiKey,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage = 'an Unkown Error occurred!';
+    console.log(errorRes);
+    if (!errorRes.error || !errorRes.error.error) {
+      return throwError(() => {
+        const newError = new Error(errorMessage);
+        return newError;
+      });
+    }
+    switch (errorRes.error.error.message) {
+      //for the sign up: all below
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email already exists.';
+        break;
+      case 'OPERATION_NOT_ALLOWED':
+        errorMessage = 'You are not Allowed to access.';
+        break;
+      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+        errorMessage = 'Tried too much, Try again later.';
+        break;
+
+      // for the log in: all below
+      case 'INVALID_LOGIN_CREDENTIALS':
+        errorMessage = 'The email or password you entered is wrong.';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
+        break;
+      case 'INVALID_PASSWORD':
+        console.log('here');
+        errorMessage = 'This password is not correct';
+        break;
+      case 'USER_DISABLED':
+        errorMessage = 'The user account has been disabled.';
+        break;
+    }
+    return throwError(() => {
+      const newError = new Error(errorMessage);
+      return newError;
+    });
   }
 }
