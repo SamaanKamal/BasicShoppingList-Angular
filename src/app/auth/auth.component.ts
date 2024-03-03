@@ -31,9 +31,9 @@ export class AuthComponent {
           console.log(resonseData);
           this.isLoading = false;
         },
-        error: (error) => {
-          console.log(error);
-          this.error='an error occured!'
+        error: (errorMessage) => {
+          console.log(errorMessage);
+          this.error = errorMessage;
           this.isLoading = false;
         },
       });
