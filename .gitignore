@@ -40,5 +40,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+<<<<<<< HEAD
 
 environment.ts
+||||||| parent of acdb75f (protected api key in local file)
+=======
+
+# api key
+environment.ts
+>>>>>>> acdb75f (protected api key in local file)
